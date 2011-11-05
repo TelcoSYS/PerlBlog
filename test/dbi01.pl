@@ -1,5 +1,4 @@
 
-
  use DBI;
  
  $dbh = DBI->connect('dbi:mysql:tpbasededatos','root','toor') or die "Connection Error: $DBI::errstr\n";
@@ -11,11 +10,11 @@
  $sth->execute or die "SQL Error: $DBI::errstr\n";
  
  # BIND TABLE COLUMNS TO VARIABLES
- $sth->bind_columns(undef, \$id, \$product, \$quantity);
+ $sth->bind_columns(undef, \$title, \$cat, \$lang);
 
  # LOOP THROUGH RESULTS
  while($sth->fetch()) {
-   print "$id, $product, $quantity\n";
+   print "$title, $cat, $lang\n";
  } 
 
  
