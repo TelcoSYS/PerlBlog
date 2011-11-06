@@ -63,7 +63,6 @@ sub openConnection {
   #my $self = shift;
     if (not defined $dbh) {
       my $connection = join(":","dbi","mysql",DBNAME,HOSTNAME);
-      print "$connection  " ;
       $dbh = DBI->connect($connection,USERNAME,PASSWORD,{RaiseError => 1, mysql_enable_utf8 => 1});
     }
     return $dbh;
