@@ -46,7 +46,7 @@ sub new {
 
 =head3 find
  
-    my %row = $baseDao->find($rid); 
+    my $row = $baseDao->find($rid); 
  
 Find a row by ID.
  
@@ -71,9 +71,18 @@ sub find {
   
 }
 
+=head3 findAll     
+
+  my $rows = $baseDao->findAll();  
+
+Find all rows. 
+
+=cut
+
 sub join_fields {
   my ($cid,$colm) = @_;	
   return $cid . ", " . join(", ",keys(%$colm));
 }
+
 
 1;
