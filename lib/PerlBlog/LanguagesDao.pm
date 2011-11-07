@@ -77,3 +77,23 @@ sub find {
   
   
 }
+
+=head3 findAll
+ 
+    my $lang = $langDao->findAll(); 
+ 
+Find a language by ID.
+ 
+=cut
+
+sub findAll {
+  my $self = shift;
+ 
+  my $row = $self->SUPER::findAll(@_);
+  
+  return undef unless defined $row;
+  
+  print Dumper ($row);
+  
+  
+}

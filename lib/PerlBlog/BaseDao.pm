@@ -36,7 +36,7 @@ sub new {
   my ($class, $table, $cid, $colm) = @_;
    
   my $cMan = PerlBlog::ConnectionManager->new();
-  my $self = {cMan => $cMan, table => $table, cid => $cid, colm => $colm };
+  my $self = {cMan => $cMan, table => $table, cid => $cid, colm => $colm, limit => 20 };
     
   $self = bless ($self, $class);  
  
@@ -78,6 +78,33 @@ sub find {
 Find all rows. 
 
 =cut
+
+sub findAll {
+  my $self = shift;
+  
+  my $cid = $self->{cid};
+  my $colm = $self->{colm};
+  
+  my $sql = "SELECT " . join_fields($cid,$colm) . " FROM $self->{table} LIMIT 0,$self->{limit} ;" ;
+  
+  print "Debug:findAll: $sql\n"; 
+  
+  #my $cMan = $self->{cMan};
+  #$cMan->execute($sql);
+
+  my $hash;
+  my $array = []; 
+  
+  push (@$array,{hola=>23,msg=>445});
+  push (@$array,{hola=>243,msg=>22445});
+  push (@$array,{hola=>223,msg=>475});
+  push (@$array,{chua=>23,msg=>555});
+  
+  return $array;
+  ##return $cMan->fetch();
+  
+}
+
 
 sub join_fields {
   my ($cid,$colm) = @_;	
