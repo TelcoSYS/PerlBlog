@@ -66,17 +66,14 @@ Find a language by ID.
  
 =cut
 
-sub find {
-  my $self = shift;
+#sub find {
+#  my $self = shift;
  
-  my $row = $self->SUPER::find(@_);
+#  my $row = $self->SUPER::find(@_);
   
-  return undef unless defined $row;
+#  return $row;
   
-  print Dumper ($row);
-  
-  
-}
+#}
 
 =head3 findAll
  
@@ -90,10 +87,6 @@ sub findAll {
   my $self = shift;
  
   my $row = $self->SUPER::findAll(@_);
-  
-  return undef unless defined $row;
-  
-  #print Dumper ($row);
   
   return ($row);
 }

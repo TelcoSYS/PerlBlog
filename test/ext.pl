@@ -10,7 +10,9 @@ use open qw(:utf8 :std);
 use lib "/home/cgc/PerlBlog/lib";
 
 use PerlBlog::LanguagesDao;
-
+#use PerlBlog::BaseCrud;
+use PerlBlog::LanguageCrud;
+use PerlUP::Tools;
 
 my $langDao = PerlBlog::LanguagesDao->new;
 
@@ -29,6 +31,17 @@ for my $row (@$rows) {
   printf "\t%4s\t%-5s\n", $row->{id}, $row->{name};
 }
 
+my $ret;
+while (1) {
+  $ret = getResponseYes() ;
+  print (($ret)? "Truel\n":"Facho\n");
+  	
+}
+
+
+my $crud = PerlBlog::LanguageCrud->new ;
+
+$crud->delete;
 
 #my $categDao = PerlBlog::CategoriesDao->new;
 #my $row = $categDao->findAll;

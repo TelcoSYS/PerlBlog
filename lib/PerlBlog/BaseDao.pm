@@ -62,8 +62,6 @@ sub find {
   
   my $sql = "SELECT " . join_fields($cid,$colm) . " FROM $self->{table} WHERE $cid = $id ;" ;
   
-  print "Debug: $sql\n";
-  
   my $cMan = $self->{cMan};
   $cMan->execute($sql);
 
