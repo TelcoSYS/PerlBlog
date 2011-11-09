@@ -5,6 +5,7 @@ use strict;
 use warnings;
 
 use Data::Dumper;
+use open qw(:utf8 :std);
 
 use lib "/home/cgc/PerlBlog/lib";
 
@@ -18,7 +19,17 @@ my $langDao = PerlBlog::LanguagesDao->new;
 #$row =  $langDao->find(4);
 #print "end 2 undef \n" unless defined $row;
 
-my $row = $langDao->findAll;
+my $rows = $langDao->findAll;
+#print Dumper ($rows);
 
-print Dumper ($row);
+print "\t  ID\tLanguage\n";
+print "\t====\t======================\n";
+
+for my $row (@$rows) {
+  printf "\t%4s\t%-5s\n", $row->{id}, $row->{name};
+}
+
+
+#my $categDao = PerlBlog::CategoriesDao->new;
+#my $row = $categDao->findAll;
 

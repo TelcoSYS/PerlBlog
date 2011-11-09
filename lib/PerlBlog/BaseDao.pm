@@ -89,19 +89,16 @@ sub findAll {
   
   print "Debug:findAll: $sql\n"; 
   
-  #my $cMan = $self->{cMan};
-  #$cMan->execute($sql);
+  my $cMan = $self->{cMan};
+  $cMan->execute($sql);
 
-  my $hash;
-  my $array = []; 
+  my $array = []; my $row;
   
-  push (@$array,{hola=>23,msg=>445});
-  push (@$array,{hola=>243,msg=>22445});
-  push (@$array,{hola=>223,msg=>475});
-  push (@$array,{chua=>23,msg=>555});
+  while ($row=$cMan->fetch) {
+	  push (@$array,$row);
+  }
   
   return $array;
-  ##return $cMan->fetch();
   
 }
 
@@ -111,5 +108,11 @@ sub join_fields {
   return $cid . ", " . join(", ",keys(%$colm));
 }
 
-
+=head1 AUTHOR
+ 
+  Gabriel Cugliari <ccugli%palermo_edu>
+  Joel Planes <jplanes%palermo_edu>
+ 
+=cut
+ 
 1;

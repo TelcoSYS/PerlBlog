@@ -93,7 +93,9 @@ sub findAll {
   
   return undef unless defined $row;
   
-  print Dumper ($row);
+  #print Dumper ($row);
   
-  
+  return ($row);
 }
+
+1;

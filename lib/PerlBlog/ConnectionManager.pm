@@ -93,7 +93,7 @@ sub execute {
 
 =head3 fetch
  
-    %row = $cMan->fetch();
+    my $row = $cMan->fetch();
  
 Fetch next row
  
@@ -103,15 +103,14 @@ sub fetch {
   my $self = shift;
   
   my $sth = $self->{sth};
-  if (defined $sth) {
-	  return $sth->fetchrow_hashref;
-  } 
-  return {};
+
+  return $sth->fetchrow_hashref;
 }
  
 =head1 AUTHOR
  
   Gabriel Cugliari <ccugli%palermo_edu>
+  Joel Planes <jplanes%palermo_edu>
  
 =cut
  
