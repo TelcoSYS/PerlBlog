@@ -12,6 +12,7 @@ use lib "/home/cgc/PerlBlog/lib";
 use PerlBlog::LanguagesDao;
 #use PerlBlog::BaseCrud;
 use PerlBlog::LanguageCrud;
+use PerlUP::Tools qw(getInput getResponseYes);
 use PerlUP::Tools;
 
 my $langDao = PerlBlog::LanguagesDao->new;
@@ -31,13 +32,13 @@ for my $row (@$rows) {
   printf "\t%4s\t%-5s\n", $row->{id}, $row->{name};
 }
 
-my $ret;
-while (1) {
-  $ret = getResponseYes() ;
-  print (($ret)? "Truel\n":"Facho\n");
-  	
-}
-
+#my $ret;
+#while (1) {
+#print "Numero: "	;
+#   $ret = getInput();
+#   print "ret: $ret\n";
+#   print ((is_positive($ret))? "trule\n":"Facho\n");
+#}
 
 my $crud = PerlBlog::LanguageCrud->new ;
 

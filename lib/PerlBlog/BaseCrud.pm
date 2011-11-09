@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use PerlUP::Tools;
+use PerlUP::Tools qw(getInput getResponseYes);
 
 
 =head1 NAME
@@ -73,17 +74,21 @@ sub delete {
   my $dao = $self->{dao};
   
   print "Ingrese el ID del $self->{entity}: ";
-  my $in = <STDIN> ; chomp $in;
+  my $in = getInput();
   if (is_unsigned $in) {
     my $row = $dao->find ($in) ;
     if (defined $row) {	  
-      print "Desea borrar el $self->{entity}\n\t$row->{id} => $row->{name}\n(yes|no)?:";
-      
+      print "Desea borrar el $self->{entity}\n\t$row->{id} => $row->{name}\n";
+      if (getResponseYes()) {
+        print "La operacion finalizo.\n";       
+      } else {
+        print "Operacion cancelada.\n";
+      }
     } else {
 	  print "El ID ingresado no existe...\n";
     }
   } else {
-	  print "Número de ID invalido...\n";
+	  print "Numero de ID invalido...\n";
   }
   
   

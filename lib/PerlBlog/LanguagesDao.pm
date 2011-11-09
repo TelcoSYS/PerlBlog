@@ -47,48 +47,14 @@ sub new {
     return $self;
 }
 
- 
-sub new_old {
-  my $class = shift;
-  
-  my $cMan = PerlBlog::ConnectionManager->new();
-  my $self = bless ({cMan => $cMan}, $class);  
- 
-  return $self;
-}
 
 
-=head3 find
- 
-    my $lang = $langDao->find(34); 
- 
-Find a language by ID.
- 
-=cut
 
 #sub find {
 #  my $self = shift;
- 
 #  my $row = $self->SUPER::find(@_);
-  
 #  return $row;
-  
 #}
 
-=head3 findAll
- 
-    my $lang = $langDao->findAll(); 
- 
-Find a language by ID.
- 
-=cut
-
-sub findAll {
-  my $self = shift;
- 
-  my $row = $self->SUPER::findAll(@_);
-  
-  return ($row);
-}
 
 1;
