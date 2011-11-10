@@ -26,7 +26,7 @@ Get an instance of LanguageCrud.
 sub new {
   my $class = shift;
     
-  my $self = $class->SUPER::new( "Lenguaje", PerlBlog::LanguagesDao->new );
+  my $self = $class->SUPER::new( PerlBlog::LanguagesDao->new );
   
   bless $self, $class;
   return $self;

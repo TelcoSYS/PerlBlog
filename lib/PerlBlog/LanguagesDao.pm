@@ -43,6 +43,7 @@ sub new {
 
     # Call the constructor of the parent class, BaseDao.
     my $self = $class->SUPER::new( TABLENAME , "id" , { name => 2 } );
+    $self->{cShow} = { id => "id", desc => "name", entity => "Idioma" };
     bless $self, $class;
     return $self;
 }

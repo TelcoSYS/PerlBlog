@@ -6,6 +6,7 @@ use warnings;
 use PerlBlog::ConnectionManager;
 use PerlUP::Tools;
 
+use Data::Dumper;
 
 =head1 NAME
  
@@ -24,7 +25,7 @@ PerlBlog::BaseDao - Capa para acceder a los datos.
  
 =head3 new
  
-    my $baseDao = PerlBlog::BaseDao->new();
+    my $dao = PerlBlog::BaseDao->new();
  
 Get an instance of BaseDao.
  
@@ -36,7 +37,7 @@ sub new {
   my ($class, $table, $cid, $colm) = @_;
    
   my $cMan = PerlBlog::ConnectionManager->new();
-  my $self = {cMan => $cMan, table => $table, cid => $cid, colm => $colm, limit => 20 };
+  my $self = {cMan => $cMan, table => $table, cid => $cid, colm => $colm, limit => 50 };
     
   $self = bless ($self, $class);  
  
@@ -46,7 +47,7 @@ sub new {
 
 =head3 find
  
-    my $row = $baseDao->find($rid); 
+    my $row = $dao->find($rid); 
  
 Find a row by ID.
  
@@ -71,7 +72,7 @@ sub find {
 
 =head3 findAll     
 
-  my $rows = $baseDao->findAll();  
+  my $rows = $dao->findAll();  
 
 Find all rows. 
 
@@ -84,8 +85,6 @@ sub findAll {
   my $colm = $self->{colm};
   
   my $sql = "SELECT " . join_fields($cid,$colm) . " FROM $self->{table} LIMIT 0,$self->{limit} ;" ;
-  
-  print "Debug:findAll: $sql\n"; 
   
   my $cMan = $self->{cMan};
   $cMan->execute($sql);
@@ -100,6 +99,64 @@ sub findAll {
   
 }
 
+
+=head3 create     
+
+  $dao->create($name);  
+
+Delete a row. 
+
+=cut
+
+sub create {
+  my ($self,$desc) = @_;
+   
+  my $sql = "INSERT INTO $self->{table} ($self->{cShow}->{desc}) VALUES ('$desc');" ;
+  
+  return $self->{cMan}->update($sql);
+}
+
+=head3 save     
+
+  $dao->save($name);  
+
+Save a row. 
+
+=cut
+
+sub save {
+  my ($self,$row) = @_;
+   
+  my $sql = "UPDATE $self->{table} SET ";
+  my $fld = $self->{colm}; 
+  my $coma = 0; my $quote ;
+  for my $key (keys(%$fld)) {
+	  $quote = ($fld->{$key} == 2)? "'":"" ;
+	  $sql .= (($coma)?", ":"") . "$key = $quote$row->{$key}$quote ";
+	  $coma = 1;
+  }
+  $sql .= " WHERE $self->{cid} = $row->{$self->{cid}};" ;
+  print "Degub: $sql\n"; 
+     
+  return $self->{cMan}->update($sql);
+}
+
+=head3 delete     
+
+  $dao->delete($id);  
+
+Delete a row. 
+
+=cut
+
+sub delete {
+  my ($self,$id) = @_;
+   
+  my $sql = "DELETE FROM $self->{table} WHERE $self->{cid} = $id ;" ;
+  
+  return $self->{cMan}->update($sql);
+  
+}
 
 sub join_fields {
   my ($cid,$colm) = @_;	

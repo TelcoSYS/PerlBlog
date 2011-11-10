@@ -7,6 +7,7 @@ use PerlUP::Tools;
 use PerlUP::Tools qw(getInput getResponseYes);
 
 
+
 =head1 NAME
  
 PerlBlog::BaseCrud - Create Read Update Delete 
@@ -24,9 +25,9 @@ Get an instance of BaseCrud.
 # The constructor of an object is called new() by convention.
  
 sub new {
-  my ($class, $entity, $dao) = @_;
+  my ($class, $dao) = @_;
    
-  my $self = { entity => $entity, dao => $dao };
+  my $self = { dao => $dao };
     
   $self = bless ($self, $class);  
  
@@ -34,31 +35,119 @@ sub new {
 }
 
 
-=head3 find
- 
-    my $row = $baseDao->find($rid); 
- 
-Find a row by ID.
- 
+=head3 showMenu     
+
+  $myCrud->showMenu();  
+
+show Menu 
+
 =cut
 
-sub find {
-  my ($self,$id) = @_;
-  
-  return undef unless is_unsigned ($id);
-  
-  my $cid = $self->{cid};
-  my $colm = $self->{colm};
-  
-  my $sql = "SELECT " . join_fields($cid,$colm) . " FROM $self->{table} WHERE $cid = $id ;" ;
-  
-  print "Debug: $sql\n";
-  
-  my $cMan = $self->{cMan};
-  $cMan->execute($sql);
+sub showMenu {
+  my $self = shift;
+  my $loop = 1;
+  do {
+    print "\nOpciones:\t(1) Listar\t(2) Crear\t(3) Editar\t(4) Borrar\t(0) Volver\n: ";
+    my $in = getInput();
+    if (is_unsigned $in) { #avoid error on text input
+    SWITCH: {
+      $in == 1 && do { $self->list(); last SWITCH; };
+      $in == 2 && do { $self->create(); last SWITCH; };
+      $in == 3 && do { $self->edit(); last SWITCH; };
+      $in == 4 && do { $self->delete(); last SWITCH; };
+      $in == 0 && do { $loop = 0; last SWITCH; };
+    }}
+  } while ($loop);
+}
 
-  return $cMan->fetch();
+
+=head3 create     
+
+  $myCrud->create();  
+
+Create a new row. 
+
+=cut
+
+sub create {
+  my $self = shift;
+  my $dao = $self->{dao};
+  my $cShow = $dao->{cShow};
   
+  print "Nombre del $dao->{cShow}->{entity}: ";
+  my $in = trim(getInput());
+  if ($in) {
+    print "Desea crear el $cShow->{entity}: $in\n";
+      if (getResponseYes()) {
+		printf "La operacion finalizo %s\n", ($dao->create($in))?"exitosamente.":"con errores" ;       
+      } else {
+        print "Operacion cancelada.\n";
+      }
+  } else {
+	  print "Nombre invalido...\n";
+  }
+}
+
+
+=head3 list     
+
+  $myCrud->list();  
+
+List all rows. 
+
+=cut
+
+sub list {
+
+  my $self = shift;
+  my $dao = $self->{dao};
+  my $cid = $dao->{cShow}->{id};
+  my $cdesc = $dao->{cShow}->{desc};
+  
+  my $rows = $dao->findAll;
+  
+  print "Listar tabla\n\n";
+  print "\t  ID\t$dao->{cShow}->{entity}\n";
+  print "\t====\t======================\n";
+
+  for my $row (@$rows) {
+    printf "\t%4s\t%-s\n", $row->{$cid}, $row->{$cdesc};
+  }
+}
+
+
+=head3 edit     
+
+  $myCrud->edit();  
+
+Edit a row. 
+
+=cut
+
+sub edit {
+  my $self = shift;
+  my $dao = $self->{dao};
+  my $cShow = $dao->{cShow};
+  
+  print "Editar registro\n\n";
+  print "Ingrese el ID del $dao->{cShow}->{entity}: ";
+  my $in = getInput();
+  if (is_unsigned $in) {
+    my $row = $dao->find ($in) ;
+    if (defined $row) {	  
+      print "\n$cShow->{entity} [$row->{$cShow->{desc}}]: ";
+      if ($in = trim(getInput())) {
+		$row->{$cShow->{desc}} = $in;
+		printf "La operacion finalizo %s\n", ($dao->save($row))?"exitosamente.":"con errores" ;       
+      } else {
+        print "No se realizaron cambios.\n";
+      }
+    } else {
+	  print "El ID ingresado no existe...\n";
+    }
+  } else {
+	  print "Numero de ID invalido...\n";
+  }
 }
 
 =head3 delete     
@@ -72,15 +161,17 @@ Delete a row.
 sub delete {
   my $self = shift;
   my $dao = $self->{dao};
+  my $cShow = $dao->{cShow};
   
-  print "Ingrese el ID del $self->{entity}: ";
+  print "Borrar registro\n\n";
+  print "Ingrese el ID del $dao->{cShow}->{entity}: ";
   my $in = getInput();
   if (is_unsigned $in) {
     my $row = $dao->find ($in) ;
     if (defined $row) {	  
-      print "Desea borrar el $self->{entity}\n\t$row->{id} => $row->{name}\n";
+      print "Desea borrar el $cShow->{entity}\n\t$row->{$cShow->{id}} => $row->{$cShow->{desc}}\n";
       if (getResponseYes()) {
-        print "La operacion finalizo.\n";       
+		printf "La operacion finalizo %s\n", ($dao->delete($in))?"exitosamente.":"con errores" ;       
       } else {
         print "Operacion cancelada.\n";
       }
@@ -90,8 +181,6 @@ sub delete {
   } else {
 	  print "Numero de ID invalido...\n";
   }
-  
-  
 }
 
 

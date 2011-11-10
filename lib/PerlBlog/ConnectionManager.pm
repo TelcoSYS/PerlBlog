@@ -3,6 +3,7 @@ package PerlBlog::ConnectionManager;
 use strict;
 use warnings;
 use DBI;
+use PerlUP::Tools;
 
 # Parametros de Conexion
 use constant USERNAME => "tpperl";
@@ -63,7 +64,7 @@ sub openConnection {
   #my $self = shift;
     if (not defined $dbh) {
       my $connection = join(":","dbi","mysql",DBNAME,HOSTNAME);
-      $dbh = DBI->connect($connection,USERNAME,PASSWORD,{RaiseError => 1, mysql_enable_utf8 => 1});
+      $dbh = DBI->connect($connection,USERNAME,PASSWORD,{RaiseError => 0, PrintError=>0, AutoCommit=>1, mysql_enable_utf8 => 1});
     }
     return $dbh;
 }
@@ -80,7 +81,7 @@ sub execute {
   my ($self, $sql) = @_; my $sth;
   
   openConnection unless defined $dbh;
-   
+ 
   if ($dbh and $sth = $dbh->prepare($sql) and $sth->execute) {
     $self->{sth} = $sth; 
     $self->{error} = 0;
@@ -89,6 +90,15 @@ sub execute {
     $self->{error} = 4;	  
   }
   #return  $self->{error};	  
+}
+
+sub update {
+  my ($self, $sql) = @_; my $sth;
+  
+  openConnection unless defined $dbh;
+  
+  return ($dbh and $sth = $dbh->prepare($sql) and is_positive ($sth->execute));
+  # return false for 0 and 0E0
 }
 
 =head3 fetch
