@@ -136,7 +136,6 @@ sub save {
 	  $coma = 1;
   }
   $sql .= " WHERE $self->{cid} = $row->{$self->{cid}};" ;
-  print "Degub: $sql\n"; 
      
   return $self->{cMan}->update($sql);
 }

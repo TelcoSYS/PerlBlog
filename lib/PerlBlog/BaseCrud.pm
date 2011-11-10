@@ -45,9 +45,11 @@ show Menu
 
 sub showMenu {
   my $self = shift;
+  print "\t$self->{dao}->{cShow}->{entity}\n\t-------------------------\n";
+
   my $loop = 1;
   do {
-    print "\n Opciones:\t(1) Listar\t(2) Crear\t(3) Editar\t(4) Borrar\t(0) Volver\n: ";
+    print "\n\t\t(1) Listar\t(2) Crear\t(3) Editar\t(4) Borrar\t(0) Volver\n:";
     my $in = getInput();
     if (is_unsigned $in) { #avoid error on text input
     SWITCH: {

@@ -33,12 +33,6 @@ sub new {
   return $self;
 }
 
-sub showMenu {
-  my $self = shift;
-  print " $self->{dao}->{cShow}->{entity}\n -------\n";
-
-  $self->SUPER::showMenu(@_);
-}
 
 =head1 AUTHOR
  

@@ -6,7 +6,7 @@ use warnings;
 use PerlUP::Tools;
 use PerlUP::Tools 'getInput';
 
-#use PerlBlog::BlogCrud;
+use PerlBlog::BlogCrud;
 use PerlBlog::LanguageCrud;
 use PerlBlog::CategoryCrud;
 
@@ -30,7 +30,7 @@ sub showMenu {
   print " ========\n";	
   my $loop = 1;
   do {
-    print "\n Opciones:\n\n";
+    print "\n";
     print "\t(1) Adminitracion de Blogs\n";
     print "\t(2) Adminitracion de Categorias\n";
     print "\t(3) Adminitracion de Idiomas\n";
@@ -38,7 +38,7 @@ sub showMenu {
     my $in = getInput();
     if (is_unsigned $in) { #avoid error on text input
     SWITCH: {
-      $in == 1 && do { PerlBlog::LanguageCrud->new->showMenu(); last SWITCH; };
+      $in == 1 && do { PerlBlog::BlogCrud->new->showMenu(); last SWITCH; };
       $in == 2 && do { PerlBlog::CategoryCrud->new->showMenu(); last SWITCH; };
       $in == 3 && do { PerlBlog::LanguageCrud->new->showMenu(); last SWITCH; };
       $in == 0 && do { $loop = 0; last SWITCH; };

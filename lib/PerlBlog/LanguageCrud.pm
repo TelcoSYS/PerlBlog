@@ -34,13 +34,6 @@ sub new {
 }
 
 
-sub showMenu {
-  my $self = shift;
-  print " $self->{dao}->{cShow}->{entity}\n -------\n";
-
-  $self->SUPER::showMenu(@_);
-}
-
 =head1 AUTHOR
  
   Gabriel Cugliari <ccugli%palermo_edu>
