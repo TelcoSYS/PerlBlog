@@ -1,63 +1,50 @@
-package PerlBlog::BaseCrud;
+package PerlBlog::MainMenu;
  
 use strict;
 use warnings;
 
 use PerlUP::Tools;
-use PerlUP::Tools qw(getInput getResponseYes);
+use PerlUP::Tools 'getInput';
 
+#use PerlBlog::BlogCrud;
+use PerlBlog::LanguageCrud;
+use PerlBlog::CategoryCrud;
 
+# No export function
 
 =head1 NAME
  
-PerlBlog::BaseCrud - Create Read Update Delete 
+PerlBlog::MainMenu - Main menu of PerlBlog 
  
-  Permite operar con los datos.
+  Menu principal de PerlBlog
  
 =head2 Methods
  
-=head3 new
- 
-Get an instance of BaseCrud.
+=head3 showMenu
  
 =cut
  
-# The constructor of an object is called new() by convention.
- 
-sub new {
-  my ($class, $dao) = @_;
-   
-  my $self = { dao => $dao };
-    
-  $self = bless ($self, $class);  
- 
-  return $self;
-}
-
-
-=head3 showMenu     
-
-  $myCrud->showMenu();  
-
-show Menu 
-
-=cut
-
 sub showMenu {
-  my $self = shift;
+	
+  print "\n PerlBlog\n";
+  print " ========\n";	
   my $loop = 1;
   do {
-    print "\n Opciones:\t(1) Listar\t(2) Crear\t(3) Editar\t(4) Borrar\t(0) Volver\n: ";
+    print "\n Opciones:\n\n";
+    print "\t(1) Adminitracion de Blogs\n";
+    print "\t(2) Adminitracion de Categorias\n";
+    print "\t(3) Adminitracion de Idiomas\n";
+    print "\t(0) Salir\n:";
     my $in = getInput();
     if (is_unsigned $in) { #avoid error on text input
     SWITCH: {
-      $in == 1 && do { $self->list(); last SWITCH; };
-      $in == 2 && do { $self->create(); last SWITCH; };
-      $in == 3 && do { $self->edit(); last SWITCH; };
-      $in == 4 && do { $self->delete(); last SWITCH; };
+      $in == 1 && do { PerlBlog::LanguageCrud->new->showMenu(); last SWITCH; };
+      $in == 2 && do { PerlBlog::CategoryCrud->new->showMenu(); last SWITCH; };
+      $in == 3 && do { PerlBlog::LanguageCrud->new->showMenu(); last SWITCH; };
       $in == 0 && do { $loop = 0; last SWITCH; };
     }}
   } while ($loop);
+  print "Gracias por usar PerlBlog\n";
 }
 
 
@@ -74,10 +61,10 @@ sub create {
   my $dao = $self->{dao};
   my $cShow = $dao->{cShow};
   
-  print "Nombre de $dao->{cShow}->{entity}: ";
+  print "Nombre del $dao->{cShow}->{entity}: ";
   my $in = trim(getInput());
   if ($in) {
-    print "Desea crear $cShow->{entity}: $in\n";
+    print "Desea crear el $cShow->{entity}: $in\n";
       if (getResponseYes()) {
 		printf "La operacion finalizo %s\n", ($dao->create($in))?"exitosamente.":"con errores" ;       
       } else {
@@ -130,7 +117,7 @@ sub edit {
   my $cShow = $dao->{cShow};
   
   print "Editar registro\n\n";
-  print "Ingrese el ID de $dao->{cShow}->{entity}: ";
+  print "Ingrese el ID del $dao->{cShow}->{entity}: ";
   my $in = getInput();
   if (is_unsigned $in) {
     my $row = $dao->find ($in) ;
@@ -164,7 +151,7 @@ sub delete {
   my $cShow = $dao->{cShow};
   
   print "Borrar registro\n\n";
-  print "Ingrese el ID de $dao->{cShow}->{entity}: ";
+  print "Ingrese el ID del $dao->{cShow}->{entity}: ";
   my $in = getInput();
   if (is_unsigned $in) {
     my $row = $dao->find ($in) ;

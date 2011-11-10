@@ -1,18 +1,18 @@
-package PerlBlog::LanguageCrud;
+package PerlBlog::CategoryCrud;
  
 use strict;
 use warnings;
 
 use PerlBlog::BaseCrud;
-use PerlBlog::LanguagesDao;
+use PerlBlog::CategoriesDao;
 
 our @ISA = qw(PerlBlog::BaseCrud);    # inherits from BaseDao
 
 =head1 NAME
  
-PerlBlog::LanguageCrud - Create Read Update Delete 
+PerlBlog::CategoryCrud - Create Read Update Delete 
  
-  Permite operar con la entidad Idioma.
+  Permite operar con la entidad Categoria.
  
 =head2 Methods
  
@@ -27,12 +27,11 @@ Get an instance of LanguageCrud.
 sub new {
   my $class = shift;
     
-  my $self = $class->SUPER::new( PerlBlog::LanguagesDao->new );
+  my $self = $class->SUPER::new( PerlBlog::CategoriesDao->new );
   
   bless $self, $class;
   return $self;
 }
-
 
 sub showMenu {
   my $self = shift;

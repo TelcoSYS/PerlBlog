@@ -38,8 +38,14 @@ my $crud = PerlBlog::LanguageCrud->new ;
 
 #$crud->delete;
 #$crud->create;
-$crud->showMenu;
+#$crud->showMenu;
 
 #my $categDao = PerlBlog::CategoriesDao->new;
 #my $row = $categDao->findAll;
 
+use PerlBlog::MainMenu;
+
+PerlBlog::MainMenu->showMenu;
+
+
+print "salida";

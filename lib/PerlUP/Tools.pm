@@ -9,7 +9,7 @@ our @EXPORT_OK = qw(getInput getResponseYes);
 
 
 # Perl trim function to remove whitespace from the start and end of the string
-sub trim($)
+sub trim
 {
 	my $string = shift;
 	$string =~ s/^\s+//;
@@ -17,14 +17,14 @@ sub trim($)
 	return $string;
 }
 # Left trim function to remove leading whitespace
-sub ltrim($)
+sub ltrim
 {
 	my $string = shift;
 	$string =~ s/^\s+//;
 	return $string;
 }
 # Right trim function to remove trailing whitespace
-sub rtrim($)
+sub rtrim
 {
 	my $string = shift;
 	$string =~ s/\s+$//;
