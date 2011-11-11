@@ -65,7 +65,10 @@ sub openConnection {
     if (not defined $dbh) {
       my $connection = join(":","dbi","mysql",DBNAME,HOSTNAME);
       $dbh = DBI->connect($connection,USERNAME,PASSWORD,{RaiseError => 0, PrintError=>0, AutoCommit=>1, mysql_enable_utf8 => 1});
+      if (not defined $dbh) {	
+        print "Fallo la conexion con la base de datos.\n"; exit (1); }
     }
+
     return $dbh;
 }
 
@@ -114,7 +117,7 @@ sub fetch {
   
   my $sth = $self->{sth};
 
-  return $sth->fetchrow_hashref;
+  return (defined $sth)? $sth->fetchrow_hashref:undef ;
 }
  
 =head1 AUTHOR

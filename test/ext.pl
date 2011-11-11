@@ -43,9 +43,11 @@ my $crud = PerlBlog::LanguageCrud->new ;
 #my $categDao = PerlBlog::CategoriesDao->new;
 #my $row = $categDao->findAll;
 
-use PerlBlog::MainMenu;
+#use PerlBlog::MainMenu;
 
-PerlBlog::MainMenu->showMenu;
+#PerlBlog::MainMenu->showMenu;
 
+my $in = getInput;
+print "[$in]\n";
 
 print "salida";

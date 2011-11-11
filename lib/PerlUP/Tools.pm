@@ -53,6 +53,8 @@ sub is_positive {
 
 sub getInput {
   $_ = <STDIN>; chomp; 
+  $_ =~ s/^\s+//;
+  $_ =~ s/\s+$//;
   return ($_);
 }
 

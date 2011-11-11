@@ -50,17 +50,10 @@ sub create {
   my $cShow = $dao->{cShow};
   my $row = {};
   
-  print "Nombre del Blog: "; my $in = trim(getInput());
-  unless ($in) { print "Nombre invalido...\n"; return; } 
-  $row->{title} = $in;
-  
-  print "ID de Categoria: "; $in = trim(getInput());
-  unless (is_unsigned $in) { print "Numero invalido...\n"; return; }
-  $row->{category_id} = $in;
-
-  print "ID de Idioma: "; $in = trim(getInput());
-  unless (is_unsigned $in) { print "Numero invalido...\n"; return; }
-  $row->{languaje_id} = $in;
+  print "Crear registro\n\n";
+  newField ("Nombre del Blog", $row, 'title', 2) or return;
+  newField ("ID de Categoria", $row, 'category_id', 1) or return;
+  newField ("ID de Idioma", $row, 'languaje_id', 1) or return;
 
   print "Desea crear el Blog: $row->{title}\n";
   if (getResponseYes()) {
@@ -92,23 +85,48 @@ sub edit {
   
   my $row = $dao->find ($in) ;
   unless (defined $row) { print "El ID ingresado no existe...\n"; return ; } 
-  
-  print "Blog [$row->{title}]: "; $in = trim(getInput());
-  unless ($in) { print "Nombre invalido...\n"; return; } 
-  $row->{title} = $in;
-  
-  print "Categoria [$row->{category_id}]: "; $in = trim(getInput());
-  unless (is_unsigned $in) { print "Numero invalido...\n"; return; } 
-  $row->{category_id} = $in;
 
-  print "Idioma [$row->{languaje_id}]: "; $in = trim(getInput());
-  unless (is_unsigned $in) { print "Numero invalido...\n"; return; }
-  $row->{languaje_id} = $in;
-
+  editField ("Blog", $row, 'title', 2) or return;
+  editField ("Categoria", $row, 'category_id', 1) or return;
+  editField ("Idioma", $row, 'languaje_id', 1) or return;
+    
   printf "La operacion finalizo %s\n", ($dao->save($row))?"exitosamente.":"con errores" ;       
   
 }
 
+
+sub newField {
+  my ($self,$name,$row,$key,$type) = @_;	
+  
+  print "$name: "; my $in = getInput();
+  unless ($in) {
+    print (($type==2)?"Nombre":"Numero" . " invalido...\n");  
+    return 0; }
+  
+  if ($type==1 and not is_unsigned $in) {
+    print "Numero invalido...\n";  
+    return 0; }     
+  
+  $row->{$key} = $in;
+  return 1;
+    
+}
+
+sub editFiled {
+  my ($self,$name,$row,$key,$type) = @_;	
+  
+  my $act = (defined $row->{$key})? " [$row->{$key}]":"";
+  print "$name$act: "; my $in = getInput();
+  
+  return 1 unless ($in); # no change field.
+  
+  if ($type==1 and not is_unsigned $in) {
+    print "Numero invalido...\n";  
+    return 0; }     
+  
+  $row->{$key} = $in;
+  return 1;  
+}
 
 =head1 AUTHOR
  
