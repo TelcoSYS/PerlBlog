@@ -47,7 +47,10 @@ my $crud = PerlBlog::LanguageCrud->new ;
 
 #PerlBlog::MainMenu->showMenu;
 
-my $in = getInput;
-print "[$in]\n";
+#my $in = getInput;
+#print "[$in]\n";
+ 
+ print ("Hello" . " world\n");
+ print "Bye" . " world\n";  
 
 print "salida";

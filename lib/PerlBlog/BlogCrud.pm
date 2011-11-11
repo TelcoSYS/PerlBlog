@@ -57,7 +57,7 @@ sub create {
 
   print "Desea crear el Blog: $row->{title}\n";
   if (getResponseYes()) {
-	printf "La operacion finalizo %s\n", ($dao->create($row))?"exitosamente.":"con errores" ;       
+	printf "La operacion finalizo %s.\n", ($dao->create($row))?"exitosamente":"con errores" ;       
   } else {
     print "Operacion cancelada.\n";
   }
@@ -83,24 +83,26 @@ sub edit {
   print "Ingrese el ID del Blog: "; my $in = getInput();
   unless (is_unsigned $in) { print "Numero invalido...\n"; return;} 
   
-  my $row = $dao->find ($in) ;
+  my $row = $dao->find ($in) ; my $dirty = 0;
   unless (defined $row) { print "El ID ingresado no existe...\n"; return ; } 
 
-  editField ("Blog", $row, 'title', 2) or return;
-  editField ("Categoria", $row, 'category_id', 1) or return;
-  editField ("Idioma", $row, 'languaje_id', 1) or return;
-    
-  printf "La operacion finalizo %s\n", ($dao->save($row))?"exitosamente.":"con errores" ;       
+  editField ("Blog", $row, 'title', 2, \$dirty) or return;
+  editField ("Categoria", $row, 'category_id', 1, \$dirty) or return;
+  editField ("Idioma", $row, 'languaje_id', 1, \$dirty) or return;
   
+  if ($dirty) {  
+    printf "La operacion finalizo %s.\n", ($dao->save($row))?"exitosamente":"con errores" ;       
+  } else {
+    print "No se realizaron modificaciones.\n"; }
 }
 
 
 sub newField {
-  my ($self,$name,$row,$key,$type) = @_;	
+  my ($name,$row,$key,$type) = @_;	
   
   print "$name: "; my $in = getInput();
   unless ($in) {
-    print (($type==2)?"Nombre":"Numero" . " invalido...\n");  
+    print ((($type==2)?"Nombre":"Numero") . " invalido...\n");  
     return 0; }
   
   if ($type==1 and not is_unsigned $in) {
@@ -112,8 +114,8 @@ sub newField {
     
 }
 
-sub editFiled {
-  my ($self,$name,$row,$key,$type) = @_;	
+sub editField {
+  my ($name,$row,$key,$type,$dirty) = @_;	
   
   my $act = (defined $row->{$key})? " [$row->{$key}]":"";
   print "$name$act: "; my $in = getInput();
@@ -124,7 +126,7 @@ sub editFiled {
     print "Numero invalido...\n";  
     return 0; }     
   
-  $row->{$key} = $in;
+  $row->{$key} = $in; $$dirty++; 
   return 1;  
 }
 

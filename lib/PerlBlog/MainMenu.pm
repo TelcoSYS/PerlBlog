@@ -62,7 +62,7 @@ sub create {
   my $cShow = $dao->{cShow};
   
   print "Nombre del $dao->{cShow}->{entity}: ";
-  my $in = trim(getInput());
+  my $in = getInput();
   if ($in) {
     print "Desea crear el $cShow->{entity}: $in\n";
       if (getResponseYes()) {
@@ -123,7 +123,7 @@ sub edit {
     my $row = $dao->find ($in) ;
     if (defined $row) {	  
       print "\n$cShow->{entity} [$row->{$cShow->{desc}}]: ";
-      if ($in = trim(getInput())) {
+      if ($in = getInput()) {
 		$row->{$cShow->{desc}} = $in;
 		printf "La operacion finalizo %s\n", ($dao->save($row))?"exitosamente.":"con errores" ;       
       } else {
